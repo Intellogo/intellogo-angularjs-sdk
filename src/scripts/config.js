@@ -3,7 +3,6 @@
 (function () {
     angular.module('rest')
         .constant('LOG_AUTH_DATA', false)
-        .constant('INTELLOGO_API_LOCATION', '')
         /**
          * The API_LOCATION was the original constant which used to hold the
          * API URL. It was widely used in REST communication services for
@@ -16,14 +15,14 @@
          */
         .provider('API_LOCATION', function () {
             this.$get = [
-                'INTELLOGO_API_LOCATION',
+                '$injector',
                 '$log',
-                function (INTELLOGO_API_LOCATION, $log) {
+                function ($injector, $log) {
                     $log.warn(
                         'API_LOCATION is deprecated. Use ServiceUtils for ' +
                         'URL construction instead');
 
-                    return INTELLOGO_API_LOCATION;
+                    return $injector.get('INTELLOGO_API_LOCATION');
                 }];
         });
 })();
