@@ -1,0 +1,34 @@
+{
+  "name": "intellogo-angularjs-sdk",
+  "version": "1.0.0",
+  "description": "Angular.js SDK for the Intellogo REST API",
+  "main": "-",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-karma": "^2.0.0",
+    "grunt-ng-annotate": "^3.0.0",
+    "jasmine-core": "^2.5.2",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-safari-launcher": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "Intellogo",
+    "sdk"
+  ],
+  "author": "Intellogo Inc. (http://www.intellogo.com)",
+  "license": "Apache-2.0"
+}

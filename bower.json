@@ -1,0 +1,31 @@
+{
+  "name": "intellogo-angularjs-sdk",
+  "authors": [
+    "Intellogo Inc. (http://www.intellogo.com)"
+  ],
+  "description": "Angular.js SDK for the Intellogo REST API",
+  "main": "dist/intellogo-sdk",
+  "moduleType": [],
+  "keywords": [
+    "Intellogo",
+    "sdk"
+  ],
+  "license": "Apache-2.0",
+  "homepage": "http://www.intellogo.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.14",
+    "lodash": "~3.10.1",
+    "async": "~1.5.0",
+    "jquery": "~2.1.4"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.4"
+  }
+}
