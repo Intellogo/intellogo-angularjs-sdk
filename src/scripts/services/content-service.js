@@ -184,7 +184,7 @@ angular.module('rest').factory(
                               });
         }
 
-        function getTaskStatus(taskId) {
+        function getFullTaskStatus(taskId) {
             return $http.get(API_LOCATION + '/api/contents/taskStatus', {
                 params: {taskId: taskId}
             });
@@ -276,7 +276,7 @@ angular.module('rest').factory(
             getEpubImportEndpoint         : getEpubImportEndpoint,
             getImportArticlesEndpoint     : getImportArticlesEndpoint,
             getStatusWithPayload          : getStatusWithPayload,
-            getTaskStatus                 : getTaskStatus,
+            getFullTaskStatus             : getFullTaskStatus,
             importArticles                : importArticles,
             importCaptions                : importCaptions,
             removeContentTree             : removeContentTree,

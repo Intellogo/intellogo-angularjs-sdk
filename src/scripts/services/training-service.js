@@ -63,7 +63,7 @@ angular.module('rest')
          * Returns the status of the current training operations.
          * @returns {HttpPromise}
          */
-        function getTaskById(taskId) {
+        function getTaskStatusById(taskId) {
             return $http.get(ServiceUtils
                              .constructServiceUrl('trainings','taskStatus'), {
                                  params : { taskId: taskId }
@@ -94,7 +94,7 @@ angular.module('rest')
         return {
             cancelTask       : cancelTask,
             getStatus        : getStatus,
-            getTaskById      : getTaskById,
+            getTaskStatusById: getTaskStatusById,
             initiateTraining : initiateTraining
         };
     });
