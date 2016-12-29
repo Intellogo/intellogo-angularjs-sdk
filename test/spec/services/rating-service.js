@@ -28,7 +28,7 @@ describe('Service: RatingService', function () {
         expect(http.get).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint(
                 '/rating/categoryBest' +
-                '?categoryId=456&content.source=foo&runId=run1&from=10&to=130'));
+                '?categoryId=456&content=%7B%22source%22%3A%22foo%22%7D&runId=run1&from=10&to=130'));
     });
 
     it('should get ratings for smart folders', function () {
@@ -54,7 +54,7 @@ describe('Service: RatingService', function () {
         expect(http.get).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint(
                 '/smartFolders/ratings' +
-                '?smartFolderItem=%7B%22min%22%3A0%2C%22max%22%3A100%2C%22categoryId%22%3A%22cat1%22%7D&smartFolderItem=%7B%22min%22%3A25%2C%22max%22%3A70%2C%22categoryId%22%3A%22cat2%22%7D&metadataFilter.source=foo&from=10&to=130'));
+                '?smartFolderItem=%7B%22min%22%3A0%2C%22max%22%3A100%2C%22categoryId%22%3A%22cat1%22%7D&smartFolderItem=%7B%22min%22%3A25%2C%22max%22%3A70%2C%22categoryId%22%3A%22cat2%22%7D&metadataFilter=%7B%22source%22%3A%22foo%22%7D&from=10&to=130'));
     });
 
     it('should count ratings for smart folders', function () {
@@ -192,7 +192,7 @@ describe('Service: RatingService', function () {
 
         expect(http.get).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint(
-                '/rating/contentBest?contentId=foo&from=20&to=30&contentsToRate.source=boo'));
+                '/rating/contentBest?contentId=foo&from=20&to=30&contentsToRate=%7B%22source%22%3A%22boo%22%7D'));
     });
 
     it('should reject to get ratings as CSV for multiple categories', function () {
