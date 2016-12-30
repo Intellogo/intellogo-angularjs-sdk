@@ -63,7 +63,6 @@ angular.module('rest', [])
 (function () {
     angular.module('rest')
         .constant('LOG_AUTH_DATA', false)
-        .constant('INTELLOGO_API_LOCATION', '')
         /**
          * The API_LOCATION was the original constant which used to hold the
          * API URL. It was widely used in REST communication services for
@@ -76,14 +75,14 @@ angular.module('rest', [])
          */
         .provider('API_LOCATION', function () {
             this.$get = [
-                'INTELLOGO_API_LOCATION',
+                '$injector',
                 '$log',
-                function (INTELLOGO_API_LOCATION, $log) {
+                function ($injector, $log) {
                     $log.warn(
                         'API_LOCATION is deprecated. Use ServiceUtils for ' +
                         'URL construction instead');
 
-                    return INTELLOGO_API_LOCATION;
+                    return $injector.get('INTELLOGO_API_LOCATION');
                 }];
         });
 })();
@@ -1126,7 +1125,7 @@ angular.module('rest').factory(
                               });
         }
 
-        function getTaskStatus(taskId) {
+        function getFullTaskStatus(taskId) {
             return $http.get(API_LOCATION + '/api/contents/taskStatus', {
                 params: {taskId: taskId}
             });
@@ -1218,7 +1217,7 @@ angular.module('rest').factory(
             getEpubImportEndpoint         : getEpubImportEndpoint,
             getImportArticlesEndpoint     : getImportArticlesEndpoint,
             getStatusWithPayload          : getStatusWithPayload,
-            getTaskStatus                 : getTaskStatus,
+            getFullTaskStatus             : getFullTaskStatus,
             importArticles                : importArticles,
             importCaptions                : importCaptions,
             removeContentTree             : removeContentTree,
@@ -1478,7 +1477,7 @@ angular.module('rest')
     .factory(
     'RatingService',
     ["$http", "ServiceUtils", "FileDownloadDialogService", function ($http, ServiceUtils, FileDownloadDialogService) {
-        // jshint maxparams:6, maxstatements:19
+        // jshint maxparams:6, maxstatements: 18
 
         function getRatingsEndpoint(service) {
             return ServiceUtils.constructServiceUrl('rating', service);
@@ -1505,16 +1504,18 @@ angular.module('rest')
 
             var queryParameters = {
                 categoryId: categoryId,
-                'content.source': parameters.source,
-                'content.sourceGroup': parameters.sourceGroups,
-                'content.acquisitionDate': parameters.date,
+                content: {
+                    source: parameters.source,
+                    sourceGroup: parameters.sourceGroups,
+                    acquisitionDate: parameters.date
+                },
                 runId: parameters.runId,
                 from: parameters.from,
                 to: parameters.to
             };
 
             if (parameters.channelId && parameters.channelId.length) {
-                queryParameters['content.channelId'] = parameters.channelId;
+                queryParameters.content.channelId = parameters.channelId;
             }
             var url = getRatingsEndpoint('categoryBest') +
                 ServiceUtils.constructQueryParameters(queryParameters);
@@ -1647,16 +1648,34 @@ angular.module('rest')
                                    smartFolderCacheType,
                                    filters,
                                    from, to) {
+            function applyFilter(queryParameters) {
+                var metadataFilter = {},
+                    recommendationsSource = filters && filters.recommendationSources,
+                    acquisitionDate = filters && filters.acquisitionDate,
+                    channelId = filters && filters.channelId;
+
+                if (recommendationsSource) {
+                    metadataFilter.source = recommendationsSource;
+                }
+                if (acquisitionDate) {
+                    metadataFilter.acquisitionDate = acquisitionDate;
+                }
+
+                if (_.isArray(channelId) && channelId.length) {
+                    metadataFilter.channelId = channelId;
+                }
+
+                if (!_.isEmpty(metadataFilter)) {
+                    queryParameters.metadataFilter = metadataFilter;
+                }
+            }
+
             var queryParameters,
-                recommendationsSource =
-                    filters && filters.recommendationSources,
-                acquisitionDate =
-                    filters && filters.acquisitionDate,
-                channelId = filters && filters.channelId,
                 smartFolderId = smartFolder._id;
             if (useSmartFolderCache) {
                 queryParameters = {
                     smartFolderId: smartFolderId,
+                    useCache: true,
                     cacheType: smartFolderCacheType
                 };
             } else {
@@ -1667,20 +1686,9 @@ angular.module('rest')
                     smartFolderItem: smartFolderParameters
                 };
             }
-            queryParameters.useCache = useSmartFolderCache;
 
-            if (recommendationsSource) {
-                queryParameters['metadataFilter.source'] =
-                    recommendationsSource;
-            }
-            if (acquisitionDate) {
-                queryParameters['metadataFilter.acquisitionDate'] =
-                    acquisitionDate;
-            }
+            applyFilter(queryParameters);
 
-            if (_.isArray(channelId) && channelId.length) {
-                queryParameters['metadataFilter.channelId'] = channelId;
-            }
             queryParameters.from = from;
             queryParameters.to = to;
 
@@ -1827,20 +1835,17 @@ angular.module('rest')
                 parameters = {
                     contentId: params.contentId
                 };
-            if (params.recommendationsSource || params.acquisitonDate) {
-                parameters.contentsToRate = {};
-            }
+            var contentsToRate = {};
+
             if (params.recommendationsSource) {
-                parameters.contentsToRate.source =
-                    params.recommendationsSource;
+                contentsToRate.source = params.recommendationsSource;
                 if (_.isArray(params.channelId) && params.channelId.length) {
-                    parameters.contentsToRate.channelId = params.channelId;
+                    contentsToRate.channelId = params.channelId;
                 }
             }
 
             if (params.acquisitonDate) {
-                parameters.contentsToRate.acquisitionDate =
-                    params.acquisitionDate;
+                contentsToRate.acquisitionDate = params.acquisitionDate;
             }
 
             if (params.includeLastRated) {
@@ -1854,6 +1859,10 @@ angular.module('rest')
             if (params.from >= 0 && params.to >= 0) {
                 parameters.from = params.from;
                 parameters.to = params.to;
+            }
+
+            if (!_.isEmpty(contentsToRate)) {
+                parameters.contentsToRate = contentsToRate;
             }
 
             return $http.post(url, parameters);
@@ -1878,7 +1887,32 @@ angular.module('rest')
          * @return {HttpPromise}
          */
         function getContentRatingsForContent(parameters) {
-            // jshint maxcomplexity:9
+            function applyContentsToRateFilter(apiParams) {
+                // jshint maxcomplexity: 6
+                var contentsToRate = {};
+
+                if (parameters.recommendationsSource) {
+                    contentsToRate.source = parameters.recommendationsSource;
+                }
+
+                if (parameters.recommendationsSourceGroup) {
+                    contentsToRate.sourceGroup = parameters.recommendationsSourceGroup;
+                }
+
+                if (_.isArray(parameters.channelId) &&
+                    parameters.channelId.length) {
+                    contentsToRate.channelId = parameters.channelId;
+                }
+
+                if (parameters.recommendationsAcquisitionDate) {
+                    contentsToRate.acquisitionDate = parameters.recommendationsAcquisitionDate;
+                }
+
+                if (!_.isEmpty(contentsToRate)) {
+                    apiParams.contentsToRate = contentsToRate;
+                }
+            }
+
             var url = getRatingsEndpoint('contentBest'),
                 apiParams = {};
 
@@ -1891,25 +1925,7 @@ angular.module('rest')
                 apiParams.to = parameters.to;
             }
 
-            if (parameters.recommendationsSource) {
-                apiParams['contentsToRate.source'] =
-                    parameters.recommendationsSource;
-            }
-
-            if (parameters.recommendationsSourceGroup) {
-                apiParams['contentsToRate.sourceGroup'] =
-                    parameters.recommendationsSourceGroup;
-            }
-
-            if (_.isArray(parameters.channelId) &&
-                parameters.channelId.length) {
-                apiParams['contentsToRate.channelId'] = parameters.channelId;
-            }
-
-            if (parameters.recommendationsAcquisitionDate) {
-                apiParams['contentsToRate.acquisitionDate'] =
-                    parameters.recommendationsAcquisitionDate;
-            }
+            applyContentsToRateFilter(apiParams);
 
             if (parameters.itemsToRate) {
                 apiParams.itemsToRate = parameters.itemsToRate;
@@ -1918,8 +1934,7 @@ angular.module('rest')
                 apiParams.includeLastRated = parameters.includeLastRated;
             }
 
-            return $http.get(url +
-                             ServiceUtils.constructQueryParameters(apiParams));
+            return $http.get(url + ServiceUtils.constructQueryParameters(apiParams));
         }
 
         function removeContentRatingsForContent(contentId) {
@@ -2708,7 +2723,7 @@ angular.module('rest')
          * Returns the status of the current training operations.
          * @returns {HttpPromise}
          */
-        function getTaskById(taskId) {
+        function getTaskStatusById(taskId) {
             return $http.get(ServiceUtils
                              .constructServiceUrl('trainings','taskStatus'), {
                                  params : { taskId: taskId }
@@ -2739,7 +2754,7 @@ angular.module('rest')
         return {
             cancelTask       : cancelTask,
             getStatus        : getStatus,
-            getTaskById      : getTaskById,
+            getTaskStatusById: getTaskStatusById,
             initiateTraining : initiateTraining
         };
     }]);
