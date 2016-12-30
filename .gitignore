@@ -1,5 +1,4 @@
 /.tmp
 /coverage
-/dist
 bower_components
 node_modules
