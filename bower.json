@@ -4,7 +4,7 @@
     "Intellogo Inc. (http://www.intellogo.com)"
   ],
   "description": "Angular.js SDK for the Intellogo REST API",
-  "main": "dist/intellogo-sdk",
+  "main": "dist/intellogo-sdk.js",
   "moduleType": [],
   "keywords": [
     "Intellogo",
