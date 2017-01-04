@@ -7,7 +7,7 @@
  * # CategoryService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'CategoryService',
     // jshint maxparams:5

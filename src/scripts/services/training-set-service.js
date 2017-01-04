@@ -7,7 +7,7 @@
  * # TrainingSetService
  * Used for manipulating training sets on the server side.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'TrainingSetService',
     function ($http, API_LOCATION, ServiceUtils) {

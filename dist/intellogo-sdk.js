@@ -4,7 +4,7 @@
  * This serves as an entry point for the "rest" module. Make sure it's included
  * before all services.
  */
-angular.module('rest', [])
+angular.module('intellogoSDK', [])
     .config(["$httpProvider", function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     }])
@@ -61,7 +61,7 @@ angular.module('rest', [])
 'use strict';
 
 (function () {
-    angular.module('rest')
+    angular.module('intellogoSDK')
         .constant('LOG_AUTH_DATA', false)
         /**
          * The API_LOCATION was the original constant which used to hold the
@@ -90,7 +90,7 @@ angular.module('rest', [])
 /**
  * Holds various event names as constants.
  */
-angular.module('rest').constant(
+angular.module('intellogoSDK').constant(
     'REST_EVENTS', {
         /**
          * The user should be authenticated.
@@ -136,7 +136,7 @@ angular.module('rest').constant(
  * # AuthService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'AuthService',
     ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "API_LOCATION", "LOG_AUTH_DATA", "REST_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
               API_LOCATION, LOG_AUTH_DATA, REST_EVENTS) {
@@ -378,7 +378,7 @@ angular.module('rest').factory(
  * # CaptionsService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'CaptionsService', ["$http", "API_LOCATION", function ($http, API_LOCATION) {
         function getAllChannels() {
             return $http.get(API_LOCATION + '/api/captions/channels');
@@ -410,7 +410,7 @@ angular.module('rest').factory(
  * # CategoryService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'CategoryService',
     // jshint maxparams:5
@@ -915,7 +915,7 @@ angular.module('rest')
 
 'use strict';
 
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory('ClientService', ['$resource', 'ServiceUtils',
         function ($resource, ServiceUtils) {
             return $resource(
@@ -928,7 +928,7 @@ angular.module('rest')
 
 'use strict';
 
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory('ContentGroupsService', ['$resource', 'ServiceUtils',
         function ($resource, ServiceUtils) {
             return $resource(
@@ -948,7 +948,7 @@ angular.module('rest')
  * # ContentService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'ContentService', ["$http", "API_LOCATION", "ServiceUtils", function ($http, API_LOCATION, ServiceUtils) {
         // jshint maxstatements: 21
         /**
@@ -1229,7 +1229,7 @@ angular.module('rest').factory(
 
 'use strict';
 
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory('EndpointService', ['$resource', 'ServiceUtils',
         function ($resource, ServiceUtils) {
             return $resource(
@@ -1249,7 +1249,7 @@ angular.module('rest')
  * # FeedSourcesService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'FeedSourcesService',
     ["$http", "API_LOCATION", function ($http, API_LOCATION) {
@@ -1295,7 +1295,7 @@ angular.module('rest')
  * # fileDownloadDialogService
  * Service in the rest.
  */
-angular.module('rest').service(
+angular.module('intellogoSDK').service(
     'FileDownloadDialogService',
     ["UrlUtils", "$window", function (UrlUtils, $window) {
         function downloadFileInNewWindow(url) {
@@ -1320,7 +1320,7 @@ angular.module('rest').service(
  *   the login page if necessary
  * @see AuthService
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'AuthInterceptor', ["UrlUtils", "$location", "$q", "TokenHandler", function (UrlUtils, $location, $q, TokenHandler) {
         return {
             request: function (config) {
@@ -1362,7 +1362,7 @@ angular.module('rest').factory(
  * # LiveConfigService
  * Services for loading and updating the server configuration.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'LiveConfigService',
     ["$http", "API_LOCATION", function ($http, API_LOCATION) {
@@ -1395,7 +1395,7 @@ angular.module('rest')
  * # localStorageBackedVariable
  * Service in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'LocalStorageBackedVariable',
     function () {
         function createTesting() {
@@ -1473,7 +1473,7 @@ angular.module('rest').factory(
  * # RatingService
  * Services for ratings manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'RatingService',
     ["$http", "ServiceUtils", "FileDownloadDialogService", function ($http, ServiceUtils, FileDownloadDialogService) {
@@ -1990,7 +1990,7 @@ angular.module('rest')
  * # readingProfiles
  * Service in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
   .service('ReadingProfilesService',
       //jshint maxparams: 5
       ["$http", "RatingService", "ServiceUtils", "API_LOCATION", function ($http, RatingService,
@@ -2219,7 +2219,7 @@ angular.module('rest')
 
 'use strict';
 
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'RunService',
     ["$http", "API_LOCATION", "ServiceUtils", function ($http, API_LOCATION, ServiceUtils) {
         function getAllRuns() {
@@ -2269,7 +2269,7 @@ angular.module('rest').factory(
  * # ServiceUtils
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'ServiceUtils', ["INTELLOGO_API_LOCATION", function (INTELLOGO_API_LOCATION) {
         function processArray(key, parameters) {
             return _.chain(parameters)
@@ -2384,7 +2384,7 @@ angular.module('rest').factory(
  * # SmartFoldersService
  * Services for smart folder manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'SmartFoldersService',
     // jshint maxparams:5
@@ -2517,7 +2517,7 @@ angular.module('rest')
  * # SystemTasksService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
         'SystemTasksService',
         // jshint maxparams:5
@@ -2610,7 +2610,7 @@ angular.module('rest')
  * # TokenHandler
  * Handles access tokens.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'TokenHandler',
     ["LocalStorageBackedVariable", function (LocalStorageBackedVariable) {
         var tokenHolder =
@@ -2667,7 +2667,7 @@ angular.module('rest').factory(
  * # TrainingService
  * Service for trainings manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'TrainingService',
     ["$http", "ServiceUtils", function ($http, ServiceUtils) {
@@ -2768,7 +2768,7 @@ angular.module('rest')
  * # TrainingSetService
  * Used for manipulating training sets on the server side.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'TrainingSetService',
     ["$http", "API_LOCATION", "ServiceUtils", function ($http, API_LOCATION, ServiceUtils) {
@@ -2813,7 +2813,7 @@ angular.module('rest')
  * # urlUtils
  * Service in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'UrlUtils',
     ["TokenHandler", function (TokenHandler) {
         function addAccessTokenToUrl(url) {
@@ -2842,7 +2842,7 @@ angular.module('rest').factory(
  * # TokenHandler
  * Handles access tokens.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'UserDataHandler',
     ["LocalStorageBackedVariable", function (LocalStorageBackedVariable) {
         var contentSourcesRestriction =
@@ -2932,7 +2932,7 @@ angular.module('rest').factory(
  * # UserDataService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'UserDataService',
     ["$http", "$q", "UserDataHandler", "API_LOCATION", function ($http, $q, UserDataHandler, API_LOCATION) {
@@ -2975,7 +2975,7 @@ angular.module('rest')
  * # UserDataService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
         'UsersService',
         ["$http", "ServiceUtils", function ($http, ServiceUtils) {
@@ -3010,7 +3010,7 @@ angular.module('rest')
  * # VersionService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
         'VersionService',
         ["$http", "$q", "API_LOCATION", function ($http, $q, API_LOCATION) {

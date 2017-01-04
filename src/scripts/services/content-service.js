@@ -7,7 +7,7 @@
  * # ContentService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'ContentService', function ($http, API_LOCATION, ServiceUtils) {
         // jshint maxstatements: 21
         /**

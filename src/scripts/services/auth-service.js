@@ -8,7 +8,7 @@
  * # AuthService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'AuthService',
     function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
               API_LOCATION, LOG_AUTH_DATA, REST_EVENTS) {

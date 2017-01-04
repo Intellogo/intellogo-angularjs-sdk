@@ -7,7 +7,7 @@
  * # readingProfiles
  * Service in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
   .service('ReadingProfilesService',
       //jshint maxparams: 5
       function ($http, RatingService,

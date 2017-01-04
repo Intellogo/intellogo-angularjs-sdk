@@ -7,7 +7,7 @@
  * # fileDownloadDialogService
  * Service in the rest.
  */
-angular.module('rest').service(
+angular.module('intellogoSDK').service(
     'FileDownloadDialogService',
     function (UrlUtils, $window) {
         function downloadFileInNewWindow(url) {

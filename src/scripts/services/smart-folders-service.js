@@ -7,7 +7,7 @@
  * # SmartFoldersService
  * Services for smart folder manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'SmartFoldersService',
     // jshint maxparams:5

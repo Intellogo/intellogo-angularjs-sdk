@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'RunService',
     function ($http, API_LOCATION, ServiceUtils) {
         function getAllRuns() {

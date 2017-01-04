@@ -2,7 +2,7 @@
 
 describe('Service: AuthService', function () {
     // load the service's module
-    beforeEach(module('rest'));
+    beforeEach(module('intellogoSDK'));
 
     // instantiate service
     var AuthService, TokenHandler, http;

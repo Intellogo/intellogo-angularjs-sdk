@@ -3,7 +3,7 @@
 describe('Service: ReadingProfilesService', function () {
 
   // load the service's module
-  beforeEach(module('rest'));
+  beforeEach(module('intellogoSDK'));
 
   // instantiate service
   var ReadingProfilesService, RatingService, http, CategoryService;

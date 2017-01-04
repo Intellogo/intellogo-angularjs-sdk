@@ -7,7 +7,7 @@
  * # TokenHandler
  * Handles access tokens.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'TokenHandler',
     function (LocalStorageBackedVariable) {
         var tokenHolder =

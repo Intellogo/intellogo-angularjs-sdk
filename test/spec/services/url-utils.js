@@ -3,7 +3,7 @@
 describe('Service: urlUtils', function () {
 
     // load the service's module
-    beforeEach(module('rest'));
+    beforeEach(module('intellogoSDK'));
 
     // instantiate service
     var UrlUtils;

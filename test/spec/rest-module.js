@@ -3,7 +3,7 @@
 describe('RestModule', function () {
 
     // load the controller's module
-    beforeEach(module('rest'));
+    beforeEach(module('intellogoSDK'));
 
     it('should decorate the $q promises with "success"', function (done) {
         inject(function ($q ,$rootScope) {

@@ -7,7 +7,7 @@
  * # RatingService
  * Services for ratings manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'RatingService',
     function ($http, ServiceUtils, FileDownloadDialogService) {

@@ -7,7 +7,7 @@
  * # ServiceUtils
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'ServiceUtils', function (INTELLOGO_API_LOCATION) {
         function processArray(key, parameters) {
             return _.chain(parameters)

@@ -7,7 +7,7 @@
  * # UserDataService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
         'UsersService',
         function ($http, ServiceUtils) {

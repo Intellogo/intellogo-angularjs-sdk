@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory('BlockHttpInterceptor', function () {
                  return {
                      request: function (config) {
@@ -17,6 +17,6 @@ angular.module('rest')
              });
 
 
-beforeEach(module('rest', function ($httpProvider) {
+beforeEach(module('intellogoSDK', function ($httpProvider) {
     $httpProvider.interceptors.push('BlockHttpInterceptor');
 }));

@@ -7,7 +7,7 @@
  * # TrainingService
  * Service for trainings manipulation.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'TrainingService',
     function ($http, ServiceUtils) {

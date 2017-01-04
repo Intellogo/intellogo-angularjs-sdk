@@ -7,7 +7,7 @@
  * # localStorageBackedVariable
  * Service in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'LocalStorageBackedVariable',
     function () {
         function createTesting() {

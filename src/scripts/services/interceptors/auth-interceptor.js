@@ -11,7 +11,7 @@
  *   the login page if necessary
  * @see AuthService
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'AuthInterceptor', function (UrlUtils, $location, $q, TokenHandler) {
         return {
             request: function (config) {

@@ -7,7 +7,7 @@
  * # urlUtils
  * Service in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'UrlUtils',
     function (TokenHandler) {
         function addAccessTokenToUrl(url) {

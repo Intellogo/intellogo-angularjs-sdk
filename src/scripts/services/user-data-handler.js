@@ -7,7 +7,7 @@
  * # TokenHandler
  * Handles access tokens.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'UserDataHandler',
     function (LocalStorageBackedVariable) {
         var contentSourcesRestriction =

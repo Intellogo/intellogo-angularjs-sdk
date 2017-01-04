@@ -7,7 +7,7 @@
  * # FeedSourcesService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'FeedSourcesService',
     function ($http, API_LOCATION) {

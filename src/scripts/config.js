@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-    angular.module('rest')
+    angular.module('intellogoSDK')
         .constant('LOG_AUTH_DATA', false)
         /**
          * The API_LOCATION was the original constant which used to hold the

@@ -7,7 +7,7 @@
  * # LiveConfigService
  * Services for loading and updating the server configuration.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
     'LiveConfigService',
     function ($http, API_LOCATION) {

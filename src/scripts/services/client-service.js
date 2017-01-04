@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory('ClientService', ['$resource', 'ServiceUtils',
         function ($resource, ServiceUtils) {
             return $resource(

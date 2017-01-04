@@ -7,7 +7,7 @@
  * # VersionService
  * Factory in the rest.
  */
-angular.module('rest')
+angular.module('intellogoSDK')
     .factory(
         'VersionService',
         function ($http, $q, API_LOCATION) {

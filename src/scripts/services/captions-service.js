@@ -7,7 +7,7 @@
  * # CaptionsService
  * Factory in the rest.
  */
-angular.module('rest').factory(
+angular.module('intellogoSDK').factory(
     'CaptionsService', function ($http, API_LOCATION) {
         function getAllChannels() {
             return $http.get(API_LOCATION + '/api/captions/channels');
