@@ -33,17 +33,24 @@ module.exports = function (grunt) {
                 configFile: 'test/karma.conf.js',
                 browsers: ['PhantomJS'],
                 reporters: ['dots'],
-                singleRun: true,
-/*                junitReporter: {
-                    outputFile: 'test-results.xml'
-                },
-                coverageReporter: {
-                    type: 'cobertura',
-                    dir: 'coverage',
-                    reporters: [
-                        {type: 'cobertura', subdir: '.', file: 'cobertura.xml'}
+                singleRun: true
+            }
+        },
+        clean: {
+            bowerComponents: {
+                files: [{
+                    dot: true,
+                    src: ['bower_components']
+                }]
+            },
+            app: {
+                files: [{
+                    dot: true,
+                    src: [
+                        './.tmp',
+                        './dist'
                     ]
-                } */
+                }]
             }
         }
     });
@@ -62,6 +69,5 @@ module.exports = function (grunt) {
                            ]);
         });
 
-    grunt.registerTask(
-        'build', ['ngAnnotate', 'concat', 'uglify']);
+    grunt.registerTask('build', ['clean', 'ngAnnotate', 'concat', 'uglify']);
 };
