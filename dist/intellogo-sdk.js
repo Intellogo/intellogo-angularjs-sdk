@@ -8,20 +8,20 @@ angular.module('intellogoSDK', [])
     .config(["$httpProvider", function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     }])
-    .run(["$rootScope", "REST_EVENTS", "AuthService", function ($rootScope, REST_EVENTS, AuthService) {
-        $rootScope.$on(REST_EVENTS.AUTHENTICATE_PASSWORD,
+    .run(["$rootScope", "INTELLOGO_EVENTS", "AuthService", function ($rootScope, INTELLOGO_EVENTS, AuthService) {
+        $rootScope.$on(INTELLOGO_EVENTS.AUTHENTICATE_PASSWORD,
                        function (event, username, password, force) {
                            AuthService.loginWithPassword(username,
                                                          password,
                                                          force);
                        }
         );
-        $rootScope.$on(REST_EVENTS.AUTHENTICATE_CLIENT_SECRET,
+        $rootScope.$on(INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_SECRET,
                        function () {
                            AuthService.loginWithClientCredentials();
                        }
         );
-        $rootScope.$on(REST_EVENTS.LOGOUT,
+        $rootScope.$on(INTELLOGO_EVENTS.LOGOUT,
                        function () {
                            AuthService.logout();
                        }
@@ -91,7 +91,7 @@ angular.module('intellogoSDK', [])
  * Holds various event names as constants.
  */
 angular.module('intellogoSDK').constant(
-    'REST_EVENTS', {
+    'INTELLOGO_EVENTS', {
         /**
          * The user should be authenticated.
          */
@@ -138,8 +138,8 @@ angular.module('intellogoSDK').constant(
  */
 angular.module('intellogoSDK').factory(
     'AuthService',
-    ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "API_LOCATION", "LOG_AUTH_DATA", "REST_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
-              API_LOCATION, LOG_AUTH_DATA, REST_EVENTS) {
+    ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "API_LOCATION", "LOG_AUTH_DATA", "INTELLOGO_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
+              API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
 
         /**
@@ -173,7 +173,7 @@ angular.module('intellogoSDK').factory(
             initializeRefresh();
 
             if (announceLogin) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_SUCCESS);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_SUCCESS);
             }
         }
 
@@ -212,7 +212,7 @@ angular.module('intellogoSDK').factory(
 
             if (!refreshToken) {
                 console.log('No refresh token available.');
-                $rootScope.$broadcast(REST_EVENTS.LOGOUT);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.LOGOUT);
                 return;
             }
 
@@ -259,7 +259,7 @@ angular.module('intellogoSDK').factory(
             }
 
             function handleAuthFailure (cause, status, payload) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_FAILURE,
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_FAILURE,
                                       cause, status, payload);
             }
 
@@ -288,7 +288,7 @@ angular.module('intellogoSDK').factory(
             };
 
             function handleAuthFailure(cause) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_FAILURE,
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_FAILURE,
                                       cause);
             }
 
@@ -342,7 +342,7 @@ angular.module('intellogoSDK').factory(
 
             if (!tokenExpiration || currentTimestamp >= momentToRefresh) {
                 console.log('Access token expired.');
-                $rootScope.$broadcast(REST_EVENTS.LOGOUT);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.LOGOUT);
                 return;
             }
 
@@ -414,7 +414,7 @@ angular.module('intellogoSDK')
     .factory(
     'CategoryService',
     // jshint maxparams:5
-    ["$http", "$rootScope", "API_LOCATION", "REST_EVENTS", "ServiceUtils", function ($http, $rootScope, API_LOCATION, REST_EVENTS, ServiceUtils) {
+    ["$http", "$rootScope", "API_LOCATION", "INTELLOGO_EVENTS", "ServiceUtils", function ($http, $rootScope, API_LOCATION, INTELLOGO_EVENTS, ServiceUtils) {
         // jshint maxstatements: 16
         /**
          * Retrieves all categories from the server.
@@ -536,7 +536,7 @@ angular.module('intellogoSDK')
             var response = $http.post(API_LOCATION + '/api/categories/update',
                                       categories);
             response.success(function() {
-                $rootScope.$broadcast(REST_EVENTS.CATEGORY_UPDATED);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.CATEGORY_UPDATED);
             });
             return response;
         }
@@ -2388,7 +2388,7 @@ angular.module('intellogoSDK')
     .factory(
     'SmartFoldersService',
     // jshint maxparams:5
-    ["$q", "$http", "$rootScope", "API_LOCATION", "REST_EVENTS", function ($q, $http, $rootScope, API_LOCATION, REST_EVENTS) {
+    ["$q", "$http", "$rootScope", "API_LOCATION", "INTELLOGO_EVENTS", function ($q, $http, $rootScope, API_LOCATION, INTELLOGO_EVENTS) {
 
         function _getSyncDummyPromise(value, error) {
             if (error) {
@@ -2479,7 +2479,7 @@ angular.module('intellogoSDK')
                                           smartFolders);
 
                 response.success(function () {
-                    $rootScope.$broadcast(REST_EVENTS.SMART_FOLDER_UPDATED);
+                    $rootScope.$broadcast(INTELLOGO_EVENTS.SMART_FOLDER_UPDATED);
                 });
             }
             return response;
@@ -2493,7 +2493,7 @@ angular.module('intellogoSDK')
             var response = $http.post(getSmartFoldersEndpoint('create'),
                                       smartFolder);
             response.success(function( )  {
-                $rootScope.$broadcast(REST_EVENTS.SMART_FOLDER_ADDED);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.SMART_FOLDER_ADDED);
             });
             return response;
         }
