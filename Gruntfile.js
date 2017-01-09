@@ -71,7 +71,6 @@ module.exports = function (grunt) {
                 }[target]) || 'unit';
 
             grunt.task.run([
-                'clean',
                 'run:installBower',
                 'karma:' + karmaTarget
             ]);
