@@ -6,6 +6,12 @@ module.exports = function (grunt) {
 
     // Define the configuration for all the tasks
     grunt.initConfig({
+        run: {
+            installBower: {
+                cmd: 'bower',
+                args: ['install', '--allow-root']
+            }
+        },
         ngAnnotate: {
             app: {
                 files: [{
@@ -65,9 +71,11 @@ module.exports = function (grunt) {
                 }[target]) || 'unit';
 
             grunt.task.run([
-                               'karma:' + karmaTarget
-                           ]);
+                'clean',
+                'run:installBower',
+                'karma:' + karmaTarget
+            ]);
         });
 
-    grunt.registerTask('build', ['clean', 'ngAnnotate', 'concat', 'uglify']);
+    grunt.registerTask('build', ['clean', 'run:installBower', 'ngAnnotate', 'concat', 'uglify']);
 };
