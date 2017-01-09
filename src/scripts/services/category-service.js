@@ -11,7 +11,7 @@ angular.module('intellogoSDK')
     .factory(
     'CategoryService',
     // jshint maxparams:5
-    function ($http, $rootScope, API_LOCATION, REST_EVENTS, ServiceUtils) {
+    function ($http, $rootScope, API_LOCATION, INTELLOGO_EVENTS, ServiceUtils) {
         // jshint maxstatements: 16
         /**
          * Retrieves all categories from the server.
@@ -133,7 +133,7 @@ angular.module('intellogoSDK')
             var response = $http.post(API_LOCATION + '/api/categories/update',
                                       categories);
             response.success(function() {
-                $rootScope.$broadcast(REST_EVENTS.CATEGORY_UPDATED);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.CATEGORY_UPDATED);
             });
             return response;
         }

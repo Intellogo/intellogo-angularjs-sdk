@@ -2,7 +2,7 @@
  * Holds various event names as constants.
  */
 angular.module('intellogoSDK').constant(
-    'REST_EVENTS', {
+    'INTELLOGO_EVENTS', {
         /**
          * The user should be authenticated.
          */

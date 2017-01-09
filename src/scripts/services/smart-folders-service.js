@@ -11,7 +11,7 @@ angular.module('intellogoSDK')
     .factory(
     'SmartFoldersService',
     // jshint maxparams:5
-    function ($q, $http, $rootScope, API_LOCATION, REST_EVENTS) {
+    function ($q, $http, $rootScope, API_LOCATION, INTELLOGO_EVENTS) {
 
         function _getSyncDummyPromise(value, error) {
             if (error) {
@@ -102,7 +102,7 @@ angular.module('intellogoSDK')
                                           smartFolders);
 
                 response.success(function () {
-                    $rootScope.$broadcast(REST_EVENTS.SMART_FOLDER_UPDATED);
+                    $rootScope.$broadcast(INTELLOGO_EVENTS.SMART_FOLDER_UPDATED);
                 });
             }
             return response;
@@ -116,7 +116,7 @@ angular.module('intellogoSDK')
             var response = $http.post(getSmartFoldersEndpoint('create'),
                                       smartFolder);
             response.success(function( )  {
-                $rootScope.$broadcast(REST_EVENTS.SMART_FOLDER_ADDED);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.SMART_FOLDER_ADDED);
             });
             return response;
         }

@@ -11,7 +11,7 @@
 angular.module('intellogoSDK').factory(
     'AuthService',
     function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
-              API_LOCATION, LOG_AUTH_DATA, REST_EVENTS) {
+              API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
 
         /**
@@ -45,7 +45,7 @@ angular.module('intellogoSDK').factory(
             initializeRefresh();
 
             if (announceLogin) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_SUCCESS);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_SUCCESS);
             }
         }
 
@@ -84,7 +84,7 @@ angular.module('intellogoSDK').factory(
 
             if (!refreshToken) {
                 console.log('No refresh token available.');
-                $rootScope.$broadcast(REST_EVENTS.LOGOUT);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.LOGOUT);
                 return;
             }
 
@@ -131,7 +131,7 @@ angular.module('intellogoSDK').factory(
             }
 
             function handleAuthFailure (cause, status, payload) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_FAILURE,
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_FAILURE,
                                       cause, status, payload);
             }
 
@@ -160,7 +160,7 @@ angular.module('intellogoSDK').factory(
             };
 
             function handleAuthFailure(cause) {
-                $rootScope.$broadcast(REST_EVENTS.AUTHENTICATION_FAILURE,
+                $rootScope.$broadcast(INTELLOGO_EVENTS.AUTHENTICATION_FAILURE,
                                       cause);
             }
 
@@ -214,7 +214,7 @@ angular.module('intellogoSDK').factory(
 
             if (!tokenExpiration || currentTimestamp >= momentToRefresh) {
                 console.log('Access token expired.');
-                $rootScope.$broadcast(REST_EVENTS.LOGOUT);
+                $rootScope.$broadcast(INTELLOGO_EVENTS.LOGOUT);
                 return;
             }
 

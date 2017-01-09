@@ -8,20 +8,20 @@ angular.module('intellogoSDK', [])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     })
-    .run(function ($rootScope, REST_EVENTS, AuthService) {
-        $rootScope.$on(REST_EVENTS.AUTHENTICATE_PASSWORD,
+    .run(function ($rootScope, INTELLOGO_EVENTS, AuthService) {
+        $rootScope.$on(INTELLOGO_EVENTS.AUTHENTICATE_PASSWORD,
                        function (event, username, password, force) {
                            AuthService.loginWithPassword(username,
                                                          password,
                                                          force);
                        }
         );
-        $rootScope.$on(REST_EVENTS.AUTHENTICATE_CLIENT_SECRET,
+        $rootScope.$on(INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_SECRET,
                        function () {
                            AuthService.loginWithClientCredentials();
                        }
         );
-        $rootScope.$on(REST_EVENTS.LOGOUT,
+        $rootScope.$on(INTELLOGO_EVENTS.LOGOUT,
                        function () {
                            AuthService.logout();
                        }
