@@ -7,38 +7,41 @@ angular
     ])
     .config(function ($routeProvider) {
         $routeProvider
-            .when('/', {
+            .when('/login', {
+                templateUrl: 'views/login.html',
+                controller: 'AuthenticateCtrl'
+            })
+            .when('/hello', {
                 templateUrl: 'views/hello.html',
                 controller: 'HelloCtrl'
             })
             .otherwise({
-                           redirectTo: '/'
+                           redirectTo: '/login'
                        });
     })
-    .run(function ($rootScope, $location, INTELLOGO_EVENTS, UserDataService) {
+    .run(function ($rootScope, $location, INTELLOGO_EVENTS, AuthService) {
         $rootScope.$on(
             INTELLOGO_EVENTS.LOGOUT,
             function () {
-                UserDataService.resetUserData();
-                //$location.path('/login');
+                $location.path('/login');
             }
         );
         $rootScope.$on(
             INTELLOGO_EVENTS.AUTHENTICATION_SUCCESS,
             function () {
-                UserDataService.loadUserData().success(function () {
-                    $location.path('/');
-                });
-            }
-        );
+                $location.path('/hello');
+            });
+
         $rootScope.$on(
             INTELLOGO_EVENTS.AUTHENTICATION_FAILURE,
             function () {
-                //alert('The username and password that you entered ' +
-                //      'don\'t match.');
+                alert('Bad client credentials');
             });
 
-        setTimeout(function () {
-            $rootScope.$emit(INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_SECRET);
-        }, 1000);
+        $rootScope.$on('$locationChangeStart', function (event, nextLocation) {
+            if (!AuthService.isLoggedIn() && !nextLocation.match('login$')) {
+                event.preventDefault();
+                $location.path('/login');
+            }
+        });
     });

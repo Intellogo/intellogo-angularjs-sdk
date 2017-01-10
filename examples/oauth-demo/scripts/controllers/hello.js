@@ -2,13 +2,14 @@
 
 /**
  * @ngdoc function
- * @name adminApp.controller:ArticleImportCtrl
+ * @name demoApp.controller:HelloCtrl
  * @description
- * # ArticleImportCtrl
- * Controller of the adminApp
  */
 angular.module('demoApp').controller(
     'HelloCtrl',
-    function ($scope) {
-        $scope.hello = 'Hello!';
+    function ($scope, INTELLOGO_EVENTS, ClientService) {
+        $scope.client = ClientService.me();
+        $scope.onLogoutClicked = function () {
+            $scope.$emit(INTELLOGO_EVENTS.LOGOUT);
+        };
     });
