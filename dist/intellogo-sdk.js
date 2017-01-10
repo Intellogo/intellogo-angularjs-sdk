@@ -4,7 +4,7 @@
  * This serves as an entry point for the "rest" module. Make sure it's included
  * before all services.
  */
-angular.module('intellogoSDK', [])
+angular.module('intellogoSDK', ['ngResource'])
     .config(["$httpProvider", function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     }])
@@ -968,7 +968,16 @@ angular.module('intellogoSDK')
             return $resource(
                 ServiceUtils.constructServiceUrl('clients', ':id'),
                 {id: '@_id'},
-                {}
+                {
+                    /**
+                     * Convenience method for retrieving information about
+                     * the currently authenticated client
+                     */
+                    me: {
+                        method: 'GET',
+                        url: ServiceUtils.constructServiceUrl('clients', 'me')
+                    }
+                }
             );
         }
     ]);
