@@ -26,7 +26,7 @@ angular.module('myApp')
 An access token will not be retrieved until you request one to be generated. This needs to happen before you start using any of the SDK's methods.
 Depending on your client type, you will be able to do that using one of the following OAuth2 grant types:
 
-* __Client Credentials__ grant type: This grant type allows an authenticated OAuth2 client (your application) to access non-user-specific content provided by Intellogo, which includes most content currently in the system. In order to retrieve a token, you need to emit the `INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_CREDENTIALS` event to the global scope, with no parameters:
+* __Client Credentials__ grant type: This grant type allows an authenticated OAuth2 client (your application) to access non-user-specific content provided by Intellogo, which includes most content currently in the system. In order to retrieve a token, you need to emit the `INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_SECRET` event to the global scope, with no parameters:
 ```
 $rootScope.$emit(INTELLOGO_EVENTS.AUTHENTICATE_CLIENT_SECRET);
 ```
