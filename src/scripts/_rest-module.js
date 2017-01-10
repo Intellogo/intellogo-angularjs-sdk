@@ -4,7 +4,7 @@
  * This serves as an entry point for the "rest" module. Make sure it's included
  * before all services.
  */
-angular.module('intellogoSDK', [])
+angular.module('intellogoSDK', ['ngResource'])
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
     })
