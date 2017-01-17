@@ -1857,15 +1857,16 @@ angular.module('intellogoSDK')
                                                  minScore,
                                                  productionReady) {
             var params = {
-                    profileId: profileId,
-                    contentIds: contentIds,
                     productionReady: productionReady,
                     minScore: minScore
                 },
-                apiUrl =
-                    ServiceUtils
-                        .constructServiceUrl('rating',
-                                             'contentsCategoryRatingsMap');
+                apiUrl = ServiceUtils.constructServiceUrl('rating', 'contentsCategoryRatingsMap');
+
+            if (profileId) {
+                params.profileId = profileId;
+            } else {
+                params.contentIds = contentIds;
+            }
 
             var response = $http.post(apiUrl, params);
 
