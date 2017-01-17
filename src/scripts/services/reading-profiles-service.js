@@ -9,7 +9,7 @@
  */
 angular.module('intellogoSDK')
   .service('ReadingProfilesService',
-      function ($http, RatingService, ServiceUtils, API_LOCATION) {
+      function ($http, RatingService, ServiceUtils) {
 
           /**
            * Save changes to the given profile, or adds it to the Intellogo system if a new one.
@@ -91,12 +91,12 @@ angular.module('intellogoSDK')
                 profileIds = [profileIds];
             }
 
-            return $http.post(API_LOCATION + '/api/profiles/remove',
+            return $http.post(ServiceUtils.constructServiceUrl('profiles', 'remove'),
                               profileIds);
         }
 
         function addProfile (profile) {
-            return $http.post(API_LOCATION + '/api/profiles/add',
+            return $http.post(ServiceUtils.constructServiceUrl('profiles', 'add'),
                               [profile]);
         }
 
@@ -121,12 +121,12 @@ angular.module('intellogoSDK')
                     contentIdsToAssign: profile.contentIdsToAssign
                 }
             };
-            return $http.post(API_LOCATION + '/api/profiles/update',
-                params);
+            return $http.post(ServiceUtils.constructServiceUrl('profiles', 'update'),
+                              params);
         }
 
         function loadProfiles() {
-            return $http.get(API_LOCATION + '/api/profiles/all');
+            return $http.get(ServiceUtils.constructServiceUrl('profiles', 'all'));
         }
 
         function loadProfileContents(profileId, loadMetadata, from, to) {
