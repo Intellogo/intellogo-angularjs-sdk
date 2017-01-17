@@ -102,7 +102,7 @@ getProfileContentsCount
 loadProfileContents  
 loadProfiles  
 removeProfiles  
-saveProfileWithCategory  
+saveProfile  
   
 ## SmartFoldersService  
 addSmartFolder  

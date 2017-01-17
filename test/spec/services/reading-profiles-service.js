@@ -32,17 +32,16 @@ describe('Service: ReadingProfilesService', function () {
 
     it('should save new profiles', function () {
         var newProfile = {
-            name     : 'foo',
+            clientReference: 'foo',
             contents : [ {contentId : '1'} ],
             originalContents : []
             }, changeCall = {
-                    name      : 'foo',
+                    clientReference: 'foo',
                     contents  : []
             };
         spyOn(http, 'post').and.returnValue(window.HttpMockHelper.mockHttpPromise({}));
 
-        ReadingProfilesService.saveProfileWithCategory(newProfile,
-                                                       function () {});
+        ReadingProfilesService.saveProfile(newProfile, function () {});
 
         expect(http.post).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint('/profiles/add'),
@@ -52,22 +51,22 @@ describe('Service: ReadingProfilesService', function () {
     it('should update existing profiles only if changed', function () {
         var changedContentsProfile = {
             _id: 'id1',
-            name: 'foo',
+            clientReference: 'foo',
             contents: [{contentId: '1'}],
             categoryId: 'cat2',
             originalContents: ['2'],
-            originalName: 'foo'
+            originalClientRef: 'foo'
         }, changeCall = {
             profileId: 'id1',
             profileData: {
-                name: 'foo',
+                clientReference: 'foo',
                 contentIdsToUnassign: [],
                 contentIdsToAssign: []
             }
         };
         spyOn(http, 'post').and.returnValue(window.HttpMockHelper.mockHttpPromise({}));
 
-        ReadingProfilesService.saveProfileWithCategory(changedContentsProfile,
+        ReadingProfilesService.saveProfile(changedContentsProfile,
             function () {
             });
 
@@ -76,16 +75,16 @@ describe('Service: ReadingProfilesService', function () {
         //        '/profiles/update'),
         //    changeCall);
 
-        var changedNameProfile = {
+        var changedClientRefProfile = {
             _id: 'id1',
-            name: 'foo',
+            clientReference: 'foo',
             contents: [{contentId: '1'}],
             categoryId: 'cat1',
             originalContents: ['1'],
-            originalName: 'oo'
+            originalClientRef: 'oo'
         };
 
-        ReadingProfilesService.saveProfileWithCategory(changedNameProfile,
+        ReadingProfilesService.saveProfile(changedClientRefProfile,
             function () {});
 
         expect(http.post).toHaveBeenCalledWith(
@@ -94,27 +93,10 @@ describe('Service: ReadingProfilesService', function () {
                 changeCall);
     });
 
-    it('should not update if nothing changed', function () {
-        var unchangedProfile = {
-            _id      : 'id1',
-            name     : 'foo',
-            contents : [ {contentId : '1'} ],
-            categoryId : 'cat1',
-            originalContents : [ {contentId : '1'} ],
-            originalName : 'foo'
-        };
-
-        spyOn(http, 'post').and.returnValue(window.HttpMockHelper.mockHttpPromise({}));
-        ReadingProfilesService.saveProfileWithCategory(unchangedProfile,
-                                                       function () {});
-
-        expect(http.post).not.toHaveBeenCalled();
-    });
-
     it('should remove existing profiles properly', function () {
         var profile = {
             _id      : 'id1',
-            name     : 'foo',
+            clientReference: 'foo',
             contents : [ {contentId : '1'} ]
         };
         spyOn(http, 'post').and.returnValue(window.HttpMockHelper.mockHttpPromise({}));
@@ -129,7 +111,7 @@ describe('Service: ReadingProfilesService', function () {
     it('should analyze profiles properly', function () {
         var profile = {
             _id      : 'id1',
-            name     : 'foo',
+            clientReference: 'foo',
             contents : [ {contentId : '1'} ]
         }, minScore = 0.7;
         spyOn(http, 'post').and
@@ -141,7 +123,6 @@ describe('Service: ReadingProfilesService', function () {
                 window.ApiEndpointHelper.getEndpoint('/rating/contentsCategoryRatingsMap'),
                 {
                     profileId: 'id1',
-                    contentIds: undefined, // WTF?!
                     productionReady: false,
                     minScore: minScore
                 });
@@ -150,7 +131,7 @@ describe('Service: ReadingProfilesService', function () {
     it('should return category combinations', function () {
         var profile = {
             _id: 'id1',
-            name: 'foo',
+            clientReference: 'foo',
             contents: [{contentId: '1'}]
         }, combinationsParams = {
                     minScore: 0.7,
