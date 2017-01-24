@@ -2133,7 +2133,7 @@ angular.module('intellogoSDK')
         }
 
         function addProfile (profile) {
-            return $http.post(ServiceUtils.constructServiceUrl('profiles', 'add'),
+            return $http.post(ServiceUtils.constructServiceUrl('profiles', 'create'),
                               [profile]);
         }
 
