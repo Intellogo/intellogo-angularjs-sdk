@@ -2058,6 +2058,8 @@ angular.module('intellogoSDK')
            * @param {Object} profile The profile to save
            * @param {String} [profile._id] The id of the profile to update, if it exists.
            * @param {String} profile.clientReference The client reference value for the profile.
+           * @param {Boolean} profile.autoupdateCategory
+           * @param {Boolean} profile.autoupdateCombinations
            * @param {Array<Content>} profile.assignedContents An array of new contents to assign
            * to a profile. Content already included in the profile does not need to be specified
            * and will not be removed (unless it is included in the unassignedContents parameter).
@@ -2074,12 +2076,14 @@ angular.module('intellogoSDK')
                     _.pluck(profile.unassignedContents, '_id'),
                 returnedProfile = _.clone(profile);
 
-            var profileForSave = {
-                _id: profile._id,
-                clientReference: profile.clientReference,
-                contentIdsToAssign: contentIdsToAssign,
-                contentIdsToUnassign: contentIdsToUnassign
-            };
+            var profileForSave = _.pick(profile, [
+                '_id',
+                'clientReference',
+                'autoupdateCategory',
+                'autoupdateCombinations',
+            ]);
+              profileForSave.contentIdsToAssign = contentIdsToAssign;
+              profileForSave.contentIdsToUnassign = contentIdsToUnassign;
 
             addOrUpdateProfile(profileForSave)
             /*
@@ -2088,15 +2092,7 @@ angular.module('intellogoSDK')
               * or a { success: true } object in case of update
               */
                 .success(function (saveResult) {
-                    if (profileForSave._id) {
-                        // updated an existing profile
-                        getProfileData(profileForSave._id)
-                            .success(function (profileData) {
-                                returnedProfile.categoryId =
-                                    profileData.categoryId;
-                                callback(null, returnedProfile);
-                            });
-                    } else {
+                    if (!profileForSave._id) {
                         /*
                          * Set the id in case of new profile,
                          * so that the profile is recognized
@@ -2107,8 +2103,9 @@ angular.module('intellogoSDK')
                             saveResult = saveResult[0];
                             returnedProfile._id = saveResult._id;
                         }
-                        callback(null, returnedProfile);
                     }
+                    callback(null, returnedProfile);
+
                 })
                 .error(callback);
         }
@@ -2118,11 +2115,11 @@ angular.module('intellogoSDK')
             if (profile._id) {
                 return updateProfile(profile);
             } else {
-                var newProfile = {
-                    clientReference: profile.clientReference,
-                    contents: profile.contentIdsToAssign
-                };
-                return addProfile(newProfile);
+                profile.contents = profile.contentIdsToAssign;
+                delete profile.contentIdsToAssign;
+                delete profile.contentIdsToUnassign;
+
+                return addProfile(profile);
             }
         }
 
@@ -2140,27 +2137,12 @@ angular.module('intellogoSDK')
                               [profile]);
         }
 
-          function getProfileData (profileId) {
-              var url = ServiceUtils.constructServiceUrl('profiles',
-                                                         'contentsCount') +
-                        ServiceUtils.constructQueryParameters(
-                            {
-                                profileId: profileId
-                            });
-
-              return $http.get(url);
-          }
-
-
         function updateProfile(profile) {
             var params = {
                 profileId: profile._id,
-                profileData: {
-                    clientReference: profile.clientReference,
-                    contentIdsToUnassign: profile.contentIdsToUnassign,
-                    contentIdsToAssign: profile.contentIdsToAssign
-                }
+                profileData: profile
             };
+            delete params.profileData._id;
             return $http.post(ServiceUtils.constructServiceUrl('profiles', 'update'),
                               params);
         }
