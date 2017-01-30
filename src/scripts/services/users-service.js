@@ -2,10 +2,9 @@
 
 /**
  * @ngdoc service
- * @name rest.UserDataService
+ * @name intellogoSDK.UserDataService
  * @description
  * # UserDataService
- * Factory in the rest.
  */
 angular.module('intellogoSDK')
     .factory(

@@ -8,7 +8,7 @@
  * Factory in the rest.
  */
 angular.module('intellogoSDK').factory(
-    'ContentService', function ($http, API_LOCATION, ServiceUtils) {
+    'ContentService', function ($http, ServiceUtils) {
         // jshint maxstatements: 21
         /**
          * Returns contents from categories.
@@ -28,7 +28,7 @@ angular.module('intellogoSDK').factory(
         function getAllContentsInCategories(from, to, options) {
             options = options || {};
 
-            var url             = API_LOCATION + '/api/contents/all',
+            var url             = ServiceUtils.constructServiceUrl('contents', 'all'),
                 queryParameters = {from: from, to: to};
 
             function setSearch() {
@@ -76,9 +76,7 @@ angular.module('intellogoSDK').factory(
         }
 
         function updateContentUsers(contentId, userIds) {
-            return $http.post(
-                ServiceUtils
-                    .constructServiceUrl('contents/users', 'update'),
+            return $http.post(ServiceUtils.constructServiceUrl('contents/users', 'update'),
                 {
                     contentId: contentId,
                     userIds  : userIds
@@ -92,7 +90,7 @@ angular.module('intellogoSDK').factory(
          * @returns {HttpPromise}
          */
         function getContentsBySourceId(sourceId) {
-            return $http.post(API_LOCATION + '/api/contents/contentsBySourceId',
+            return $http.post(ServiceUtils.constructServiceUrl('contents', 'contentsBySourceId'),
                               {sourceId: sourceId});
         }
 
@@ -106,8 +104,8 @@ angular.module('intellogoSDK').factory(
             var contents = _.map(contentIds, function (id) {
                 return {contentId: id};
             });
-
-            return $http.post(API_LOCATION + '/api/contents/metadata/all', contents);
+            return $http.post(ServiceUtils.constructServiceUrl('contents/metadata', 'all'),
+                              contents);
         }
 
         /**
@@ -124,7 +122,7 @@ angular.module('intellogoSDK').factory(
                     contentId: content._id
                 };
             });
-            return $http.post(API_LOCATION + '/api/contents/delete',
+            return $http.post(ServiceUtils.constructServiceUrl('contents', 'delete'),
                               parameters);
         }
 
@@ -140,15 +138,15 @@ angular.module('intellogoSDK').factory(
          * @returns {HttpPromise}
          */
         function getAllContentSources() {
-            return $http.get(API_LOCATION + '/api/contents/sources');
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'sources'));
         }
 
         function getContentsRestrictions() {
-            return $http.get(API_LOCATION + '/api/contents/restrictions');
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'restrictions'));
         }
 
         function getContentsCount() {
-            return $http.get(API_LOCATION + '/api/contents/count');
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'count'));
         }
 
         /**
@@ -161,7 +159,7 @@ angular.module('intellogoSDK').factory(
          * in mind that it may take some time for the content to be processed.
          */
         function importArticles(articles) {
-            return $http.post(API_LOCATION + '/api/contents/importArticles',
+            return $http.post(ServiceUtils.constructServiceUrl('contents', 'importArticles'),
                               {dataForImport: articles});
         }
 
@@ -176,16 +174,17 @@ angular.module('intellogoSDK').factory(
          * in mind that it may take some time for the content to be processed.
          */
         function importCaptions(channelUrl, autoSub, refreshAll) {
-            return $http.post(API_LOCATION +
-                              '/api/contents/initiateChannelImportTask', {
-                                  channel: channelUrl,
-                                  autoSub: autoSub,
-                                  refreshAll: refreshAll
-                              });
+            return $http.post(
+                ServiceUtils.constructServiceUrl('contents', 'initiateChannelImportTask'),
+                {
+                    channel: channelUrl,
+                    autoSub: autoSub,
+                    refreshAll: refreshAll
+                });
         }
 
         function getFullTaskStatus(taskId) {
-            return $http.get(API_LOCATION + '/api/contents/taskStatus', {
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'taskStatus'), {
                 params: {taskId: taskId}
             });
         }
@@ -195,7 +194,7 @@ angular.module('intellogoSDK').factory(
          * @returns {HttpPromise}
          */
         function getStatusWithPayload(timeInterval) {
-            return $http.get(API_LOCATION + '/api/contents/statusWithPayload', {
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'statusWithPayload'), {
                 params: {timeInterval: timeInterval}
             });
         }
@@ -208,7 +207,7 @@ angular.module('intellogoSDK').factory(
             if (options.source) {
                 query.source = options.source;
             }
-            return $http.get(API_LOCATION + '/api/contents/topLevel' +
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'topLevel') +
                              ServiceUtils.constructQueryParameters(query));
         }
 
@@ -216,7 +215,7 @@ angular.module('intellogoSDK').factory(
             var params = {
                 contentId: contentId
             };
-            return $http.get(API_LOCATION + '/api/contents/tree' +
+            return $http.get(ServiceUtils.constructServiceUrl('contents', 'tree') +
                              ServiceUtils.constructQueryParameters(params));
         }
 
@@ -225,12 +224,12 @@ angular.module('intellogoSDK').factory(
                 contentId: contentId,
                 metadata : newMetadata
             };
-            return $http.post(API_LOCATION + '/api/contents/tree/metadata',
+            return $http.post(ServiceUtils.constructServiceUrl('contents/tree', 'metadata'),
                               params);
         }
 
         function getEpubImportEndpoint() {
-            return API_LOCATION + '/api/contents/importEpub';
+            return ServiceUtils.constructServiceUrl('contents', 'importEpub');
         }
 
         function getImportArticlesEndpoint() {
