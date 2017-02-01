@@ -44,7 +44,7 @@ describe('Service: ReadingProfilesService', function () {
         ReadingProfilesService.saveProfile(newProfile, function () {});
 
         expect(http.post).toHaveBeenCalledWith(
-            window.ApiEndpointHelper.getEndpoint('/profiles/add'),
+            window.ApiEndpointHelper.getEndpoint('/profiles/create'),
             [changeCall]);
     });
 

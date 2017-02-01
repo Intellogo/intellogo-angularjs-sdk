@@ -2,7 +2,8 @@
 
 beforeEach(function () {
     angular.module('intellogoSDK')
-        .constant('OAUTH_CLIENT_ID', 'testApplication')
-        .constant('OAUTH_CLIENT_SECRET', 'ChuckNorris')
+        .run(function (AuthService) {
+            AuthService.setClientCredentials('testApplication', 'ChuckNorris');
+        })
         .constant('INTELLOGO_API_LOCATION', '');
 });
