@@ -44,4 +44,6 @@ angular
                 $location.path('/login');
             }
         });
+
+        AuthService.setClientCredentials('client', 'secret');
     });

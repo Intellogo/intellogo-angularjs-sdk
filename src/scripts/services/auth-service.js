@@ -6,20 +6,27 @@
  * @name rest.AuthService
  * @description
  * # AuthService
- * Factory in the rest.
+ * Factory in the IntellogoSDK.
  */
 angular.module('intellogoSDK').factory(
     'AuthService',
     function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
               API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
+        var clientId;
+        var clientSecret;
+
+        function setClientCredentials(oauthClientId, oauthClientSecret) {
+            clientId = oauthClientId;
+            clientSecret = oauthClientSecret;
+        }
 
         /**
          * Dynamically gets the OAuth client ID.
          * @return {String}
          */
         function getOauthClientId() {
-            return $injector.get('OAUTH_CLIENT_ID');
+            return clientId;
         }
 
         /**
@@ -27,7 +34,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientSecret() {
-            return $injector.get('OAUTH_CLIENT_SECRET');
+            return clientSecret;
         }
 
         function handleResult(data, announceLogin) {
@@ -232,6 +239,7 @@ angular.module('intellogoSDK').factory(
         }
 
         return {
+            setClientCredentials: setClientCredentials,
             loginWithPassword: loginWithPassword,
             loginWithClientCredentials: loginWithClientCredentials,
             logout: logout,

@@ -63,6 +63,7 @@ angular.module('intellogoSDK', ['ngResource'])
 (function () {
     angular.module('intellogoSDK')
         .constant('LOG_AUTH_DATA', false)
+        .constant('INTELLOGO_API_LOCATION', 'https://production.intellogo.com')
         /**
          * The API_LOCATION was the original constant which used to hold the
          * API URL. It was widely used in REST communication services for
@@ -181,20 +182,27 @@ angular.module('intellogoSDK').constant(
  * @name rest.AuthService
  * @description
  * # AuthService
- * Factory in the rest.
+ * Factory in the IntellogoSDK.
  */
 angular.module('intellogoSDK').factory(
     'AuthService',
     ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "API_LOCATION", "LOG_AUTH_DATA", "INTELLOGO_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
               API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
+        var clientId;
+        var clientSecret;
+
+        function setClientCredentials(oauthClientId, oauthClientSecret) {
+            clientId = oauthClientId;
+            clientSecret = oauthClientSecret;
+        }
 
         /**
          * Dynamically gets the OAuth client ID.
          * @return {String}
          */
         function getOauthClientId() {
-            return $injector.get('OAUTH_CLIENT_ID');
+            return clientId;
         }
 
         /**
@@ -202,7 +210,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientSecret() {
-            return $injector.get('OAUTH_CLIENT_SECRET');
+            return clientSecret;
         }
 
         function handleResult(data, announceLogin) {
@@ -407,6 +415,7 @@ angular.module('intellogoSDK').factory(
         }
 
         return {
+            setClientCredentials: setClientCredentials,
             loginWithPassword: loginWithPassword,
             loginWithClientCredentials: loginWithClientCredentials,
             logout: logout,

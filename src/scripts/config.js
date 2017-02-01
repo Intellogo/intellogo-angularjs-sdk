@@ -3,6 +3,7 @@
 (function () {
     angular.module('intellogoSDK')
         .constant('LOG_AUTH_DATA', false)
+        .constant('INTELLOGO_API_LOCATION', 'https://production.intellogo.com')
         /**
          * The API_LOCATION was the original constant which used to hold the
          * API URL. It was widely used in REST communication services for

@@ -15,13 +15,8 @@ The main script that needs to be included in your application is `dist/intellogo
 
 ## Authentication
 ### Credentials
-The Intellogo API authentication is based on the OAuth2 protocol. Our Angular.js SDK takes care of generating an access token for you and refreshing it at the required intervals. You only need to register your credentials as the following constants in your main application module:
-```
-angular.module('myApp')
-    .constant('OAUTH_CLIENT_ID', '<myClientId>')
-    .constant('OAUTH_CLIENT_SECRET', '<myClientSecret>')
-    .constant('INTELLOGO_API_LOCATION', 'https://production.intellogo.com');
-```
+The Intellogo API authentication is based on the OAuth2 protocol. Our Angular.js SDK takes care of generating an access token for you and refreshing it at the required intervals. Before using the API, you only need to register your credentials by calling `AuthService.setClientCredentials(<myClientId>, <myClientSecret>)`.
+
 ### Token Retrieval
 An access token will not be retrieved until you request one to be generated. This needs to happen before you start using any of the SDK's methods.
 Depending on your client type, you will be able to do that using one of the following OAuth2 grant types:

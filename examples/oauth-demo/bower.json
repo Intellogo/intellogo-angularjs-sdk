@@ -7,7 +7,7 @@
     "async": "~1.5.0",
     "jquery": "~2.1.4",
     "lodash": "~3.10.1",
-    "intellogo-angularjs-sdk": "~1.0.0"
+    "intellogo-angularjs-sdk": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.8",

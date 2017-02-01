@@ -1,11 +1,12 @@
 ## AuthService  
+initializeRefresh  
+isLoggedIn  
 loginWithPassword  
 loginWithClientCredentials  
 logout  
-initializeRefresh  
 refresh  
-isLoggedIn  
-  
+setClientCredentials  
+
 ## CaptionsService  
 deleteChannel  
 getAllChannels  
