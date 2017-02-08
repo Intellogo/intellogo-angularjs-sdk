@@ -17,7 +17,7 @@ angular.module('intellogoSDK').factory(
         var localStorageVarsHolders = {};
 
         function generateKey(keyName) {
-            return IntellogoCredentials.getOauthClientId() + '.' + keyName;
+            return md5(IntellogoCredentials.getOauthClientId() + '.' + keyName);
         }
 
         function getValue(keyName) {
@@ -29,6 +29,7 @@ angular.module('intellogoSDK').factory(
 
         function setValue(keyName, value) {
             var key = generateKey(keyName);
+
             localStorageVarsHolders[key] =
                 localStorageVarsHolders[key] || LocalStorageBackedVariable.createHolder(key);
             localStorageVarsHolders[key].setValue(value);

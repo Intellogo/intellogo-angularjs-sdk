@@ -1,9 +1,5 @@
 'use strict';
 
-/*
- * This serves as an entry point for the "rest" module. Make sure it's included
- * before all services.
- */
 angular.module('intellogoSDK', ['ngResource'])
     .config(["$httpProvider", function ($httpProvider) {
         $httpProvider.interceptors.push('AuthInterceptor');
@@ -186,15 +182,12 @@ angular.module('intellogoSDK').constant(
  */
 angular.module('intellogoSDK').factory(
     'AuthService',
-    ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "API_LOCATION", "LOG_AUTH_DATA", "INTELLOGO_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
-              API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
+    ["$rootScope", "$http", "$window", "$timeout", "$injector", "TokenHandler", "IntellogoCredentials", "API_LOCATION", "LOG_AUTH_DATA", "INTELLOGO_EVENTS", function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
+              IntellogoCredentials, API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
-        var clientId;
-        var clientSecret;
 
         function setClientCredentials(oauthClientId, oauthClientSecret) {
-            clientId = oauthClientId;
-            clientSecret = oauthClientSecret;
+            IntellogoCredentials.setClientCredentials(oauthClientId, oauthClientSecret);
         }
 
         /**
@@ -202,7 +195,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientId() {
-            return clientId;
+            return IntellogoCredentials.getOauthClientId();
         }
 
         /**
@@ -210,7 +203,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientSecret() {
-            return clientSecret;
+            return IntellogoCredentials.getOauthClientSecret();
         }
 
         function handleResult(data, announceLogin) {
@@ -1290,6 +1283,26 @@ angular.module('intellogoSDK').factory(
             updateContentUsers            : updateContentUsers
         };
     }]);
+
+'use strict';
+
+angular.module('intellogoSDK').factory(
+    'IntellogoCredentials',
+    function () {
+        var clientId, clientSecret;
+        return {
+            getOauthClientId: function () {
+                return clientId;
+            },
+            getOauthClientSecret: function () {
+                return clientSecret;
+            },
+            setClientCredentials: function (id, secret) {
+                clientId = id;
+                clientSecret = secret;
+            }
+        };
+    });
 
 'use strict';
 
@@ -2643,48 +2656,91 @@ angular.module('intellogoSDK')
  */
 angular.module('intellogoSDK').factory(
     'TokenHandler',
-    ["LocalStorageBackedVariable", function (LocalStorageBackedVariable) {
-        var tokenHolder =
-                LocalStorageBackedVariable.createHolder('token'),
-            refreshTokenHolder =
-                LocalStorageBackedVariable.createHolder('refresh_token'),
-            expirationHolder =
-                LocalStorageBackedVariable.createHolder('expiration');
+    ["LocalStorageBackedVariable", "IntellogoCredentials", function (LocalStorageBackedVariable, IntellogoCredentials) {
+        var ACCESS_TOKEN = 'access_token',
+            TOKEN_EXPIRATION = 'token_expiration',
+            REFRESH_TOKEN = 'refresh_token';
+
+        var localStorageVarsHolders = {};
+
+        function generateKey(keyName) {
+            return md5(IntellogoCredentials.getOauthClientId() + '.' + keyName);
+        }
+
+        function getValue(keyName) {
+            var key = generateKey(keyName);
+            localStorageVarsHolders[key] =
+                localStorageVarsHolders[key] || LocalStorageBackedVariable.createHolder(key);
+            return localStorageVarsHolders[key].getValue();
+        }
+
+        function setValue(keyName, value) {
+            var key = generateKey(keyName);
+
+            localStorageVarsHolders[key] =
+                localStorageVarsHolders[key] || LocalStorageBackedVariable.createHolder(key);
+            localStorageVarsHolders[key].setValue(value);
+        }
+
+        function getToken () {
+            return getValue(ACCESS_TOKEN);
+        }
+
+        function setToken (accessToken) {
+            setValue(ACCESS_TOKEN, accessToken);
+        }
+
+        function getTokenExpiration () {
+            return getValue(TOKEN_EXPIRATION);
+        }
+
+        function setTokenExpiration (expiration) {
+            setValue(TOKEN_EXPIRATION, expiration);
+        }
+
+        function getRefreshToken () {
+            return getValue(REFRESH_TOKEN);
+        }
+
+        function setRefreshToken (refreshToken) {
+            setValue(REFRESH_TOKEN, refreshToken);
+        }
+
 
         return {
             /**
              * Sets a new value for the access token.
              * @param {String} token The access token.
              */
-            setToken: tokenHolder.setValue,
+            setToken: setToken,
             /**
              * Sets the expiration of the current access token.
              * @param {number} timestamp The timestamp.
              */
-            setTokenExpiration: expirationHolder.setValue,
+            setTokenExpiration: setTokenExpiration,
             /**
              * Get the expiration of the current token.
              * @return {number} The expiration.
              */
-            getTokenExpiration: expirationHolder.getValue,
+            getTokenExpiration: getTokenExpiration,
             /**
              * Sets a new value for the refresh token.
              * @param {String} token The refresh token.
              */
-            setRefreshToken: refreshTokenHolder.setValue,
+            setRefreshToken: setRefreshToken,
             /**
              * @returns {String} The current access token.
              */
-            getToken: tokenHolder.getValue,
+            getToken: getToken,
             /**
              * @returns {String} The current refresh token.
              */
-            getRefreshToken: refreshTokenHolder.getValue,
+            getRefreshToken: getRefreshToken,
 
             resetTokens: function () {
-                tokenHolder.setValue(null);
-                refreshTokenHolder.setValue(null);
-                expirationHolder.setValue(0);
+                setToken(null);
+                setRefreshToken(null);
+                setTokenExpiration(0);
             }
         };
     }]);
