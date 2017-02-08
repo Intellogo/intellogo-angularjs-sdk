@@ -28,7 +28,7 @@
         "alert": false,
         "angular": false,
         "async": false,
-        "md5": false,
+        "SparkMD5": false,
         "moment": false
     }
 }

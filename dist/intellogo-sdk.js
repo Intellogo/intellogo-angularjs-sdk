@@ -2664,7 +2664,7 @@ angular.module('intellogoSDK').factory(
         var localStorageVarsHolders = {};
 
         function generateKey(keyName) {
-            return md5(IntellogoCredentials.getOauthClientId() + '.' + keyName);
+            return SparkMD5.hash(IntellogoCredentials.getOauthClientId() + '.' + keyName);
         }
 
         function getValue(keyName) {
