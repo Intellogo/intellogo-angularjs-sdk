@@ -11,14 +11,11 @@
 angular.module('intellogoSDK').factory(
     'AuthService',
     function ($rootScope, $http, $window, $timeout, $injector, TokenHandler,
-              API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
+              IntellogoCredentials, API_LOCATION, LOG_AUTH_DATA, INTELLOGO_EVENTS) {
         var refreshTimer;
-        var clientId;
-        var clientSecret;
 
         function setClientCredentials(oauthClientId, oauthClientSecret) {
-            clientId = oauthClientId;
-            clientSecret = oauthClientSecret;
+            IntellogoCredentials.setClientCredentials(oauthClientId, oauthClientSecret);
         }
 
         /**
@@ -26,7 +23,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientId() {
-            return clientId;
+            return IntellogoCredentials.getOauthClientId();
         }
 
         /**
@@ -34,7 +31,7 @@ angular.module('intellogoSDK').factory(
          * @return {String}
          */
         function getOauthClientSecret() {
-            return clientSecret;
+            return IntellogoCredentials.getOauthClientSecret();
         }
 
         function handleResult(data, announceLogin) {
