@@ -1,0 +1,9 @@
+#!/bin/bash
+versionFile=".version-update"
+if ! [ -f "$versionFile" ]
+then
+    # mark the version update as in-progress
+    touch "$versionFile"
+    bower version patch
+    rm "$versionFile"
+fi
