@@ -1,0 +1,15 @@
+#!/bin/bash
+
+###
+# This post-commit hook makes sure that the bower version is updated on each commit
+###
+versionFile=".version-update"
+currentBranch=`git rev-parse --abbrev-ref HEAD`
+if [[ ! -f "$versionFile" && "$currentBranch" == "master" ]]
+then
+    # mark the version update as in-progress
+    touch "$versionFile"
+    bower version patch
+    rm "$versionFile"
+    echo 'Patch version updated! If this commit introduces a change for minor or major update, use `bower version <minor/major>` to update to the appropriate version number'
+fi
