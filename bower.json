@@ -1,6 +1,6 @@
 {
   "name": "intellogo-angularjs-sdk",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "authors": [
     "Intellogo Inc. (http://www.intellogo.com)"
   ],
@@ -15,9 +15,11 @@
   "homepage": "http://www.intellogo.com",
   "ignore": [
     "**/.*",
+    "**/*~",
     "node_modules",
     "bower_components",
     "examples",
+    "custom-git-hooks",
     "test",
     "tests"
   ],
