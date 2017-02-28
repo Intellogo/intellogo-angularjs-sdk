@@ -9,7 +9,10 @@ if [[ ! -f "$versionFile" && "$currentBranch" == "master" ]]
 then
     # mark the version update as in-progress
     touch "$versionFile"
+    # won't work if working dir is not clean
+    git stash save
     bower version patch
+    git stash pop
     rm "$versionFile"
     echo 'Patch version updated! If this commit introduces a change for minor or major update, use `bower version <minor/major>` to update to the appropriate version number'
 fi
