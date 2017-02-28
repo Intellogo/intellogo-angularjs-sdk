@@ -25,6 +25,7 @@ module.exports = function (config) {
             'bower_components/angular-resource/angular-resource.js',
             'bower_components/lodash/lodash.js',
             'bower_components/async/lib/async.js',
+            'bower_components/SparkMD5/spark-md5.js',
             'src/scripts/**/*.js',
             'test/spec/helpers/*.js',
             'test/spec/**/*.js'
