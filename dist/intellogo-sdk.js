@@ -2440,7 +2440,7 @@ angular.module('intellogoSDK')
     .factory(
     'SmartFoldersService',
     // jshint maxparams:5
-    ["$q", "$http", "$rootScope", "API_LOCATION", "INTELLOGO_EVENTS", function ($q, $http, $rootScope, API_LOCATION, INTELLOGO_EVENTS) {
+    ["$q", "$http", "$rootScope", "ServiceUtils", "INTELLOGO_EVENTS", function ($q, $http, $rootScope, ServiceUtils, INTELLOGO_EVENTS) {
 
         function _getSyncDummyPromise(value, error) {
             if (error) {
@@ -2452,7 +2452,7 @@ angular.module('intellogoSDK')
         }
 
         function getSmartFoldersEndpoint(service) {
-            return API_LOCATION + '/api/smartFolders/' + service;
+            return ServiceUtils.constructServiceUrl('smartFolders', service);
         }
 
         /**
@@ -2507,7 +2507,7 @@ angular.module('intellogoSDK')
          * @returns {HttpPromise}
          */
         function getAllSmartFolders(categoryId, metadataFilter) {
-            var url = API_LOCATION + '/api/smartFolders';
+            var url = getSmartFoldersEndpoint();
             var params = {categoryId: categoryId};
             if (metadataFilter && metadataFilter.tags) {
                 params.tags = JSON.stringify(metadataFilter.tags);
@@ -2516,8 +2516,13 @@ angular.module('intellogoSDK')
             return $http.get(url, {params: params});
         }
 
+        function getSmartFoldersById(smartFolderIds) {
+            var url =  getSmartFoldersEndpoint('info');
+            return $http.post(url, smartFolderIds);
+        }
+
         function getSmartFolderImage(smartFolderId) {
-            var url = API_LOCATION + '/api/smartFolders/image/' + smartFolderId;
+            var url =  getSmartFoldersEndpoint('image/' + smartFolderId);
 
             return $http.get(url);
         }
@@ -2561,6 +2566,7 @@ angular.module('intellogoSDK')
         return {
             // jshint maxlen:150
             getAllSmartFolders  : getAllSmartFolders,
+            getSmartFoldersById : getSmartFoldersById,
             deleteSmartFolder   : deleteSmartFolder,
             updateSmartFolders  : updateSmartFolders,
             addSmartFolder      : addSmartFolder,
