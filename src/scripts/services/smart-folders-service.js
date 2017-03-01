@@ -71,12 +71,20 @@ angular.module('intellogoSDK')
          * Gets all smart folders from the server.
          * @param categoryId {string} if passed,
          * will filter the resulting smartCollections by category id
+         * @param metadataFilter {Object} optional filters for the smart collection metadata
+         * Currently supported is only filtering by tags.
+         * @param metadataFilter.tags {Array} an array of tags to match. Only smart collections
+         * matching at least one of the provided tags will be returned.
          * @returns {HttpPromise}
          */
-        function getAllSmartFolders(categoryId) {
+        function getAllSmartFolders(categoryId, metadataFilter) {
             var url = API_LOCATION + '/api/smartFolders';
+            var params = {categoryId: categoryId};
+            if (metadataFilter && metadataFilter.tags) {
+                params.tags = JSON.stringify(metadataFilter.tags);
+            }
 
-            return $http.get(url, {params: {categoryId: categoryId}});
+            return $http.get(url, {params: params});
         }
 
         function getSmartFolderImage(smartFolderId) {

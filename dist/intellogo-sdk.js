@@ -1671,12 +1671,19 @@ angular.module('intellogoSDK')
          * @param {{categoryId: string, value: number[]}|
          * {contentId: string, value: number[]}} smartFolder
          * The smart folder that should be used for filtering.
-         * @param {string[]} [recommendationsSource] Optional filter by source
+         * @param {Boolean} useSmartFolderCache Whether to use
+         * cached results for the smart folder.
+         * @param {String} smartFolderCacheType Which type of cache to use. Supported types are
+         * 'newest' and 'best'.
+         * @param {Object} filters
+         * @param {string[]} [filters.recommendationSources] filter by sources
+         * @param {string[]} [filters.sourceGroups] Filter by content source group (e.g. web, books)
+         * @param {Number} [filters.acquisitionDate] Only content created after this timestamp
+         * will be matched
+         * @param {String} [filters.channelId] Youtube only. If searching for matching Youtube
+         * videos, narrows the results down to matches only from the specified Youtube channel.
          * @param {number} [from] Start of the "slice" to show.
          * @param {number} [to] Start of the "slice" to show.
-         * @param {Boolean} smartFolder.useSmartFolderCache Whether to use
-         * cached results
-         * for the smart folder.
          * @returns {HttpPromise}
          */
         function getRatingsForSmartFolder(smartFolder,
@@ -1726,20 +1733,23 @@ angular.module('intellogoSDK')
                                    filters,
                                    from, to) {
             function applyFilter(queryParameters) {
-                var metadataFilter = {},
-                    recommendationsSource = filters && filters.recommendationSources,
-                    acquisitionDate = filters && filters.acquisitionDate,
-                    channelId = filters && filters.channelId;
+                var metadataFilter = {};
 
-                if (recommendationsSource) {
-                    metadataFilter.source = recommendationsSource;
-                }
-                if (acquisitionDate) {
-                    metadataFilter.acquisitionDate = acquisitionDate;
+                metadataFilter = _.pick(filters, [
+                    'recommendationSources',
+                    'sourceGroups',
+                    'acquisitionDate',
+                    'channelId'
+                ]);
+                if (metadataFilter.recommendationSources) {
+                    // rename field
+                    metadataFilter.source = metadataFilter.recommendationSources;
+                    delete metadataFilter.recommendationSources;
                 }
 
-                if (_.isArray(channelId) && channelId.length) {
-                    metadataFilter.channelId = channelId;
+                if (metadataFilter.sourceGroups) {
+                    metadataFilter.sourceGroup = metadataFilter.sourceGroups;
+                    delete metadataFilter.sourceGroups;
                 }
 
                 if (!_.isEmpty(metadataFilter)) {
@@ -1756,9 +1766,7 @@ angular.module('intellogoSDK')
                     cacheType: smartFolderCacheType
                 };
             } else {
-                var smartFolderParameters =
-                    _.map(smartFolder.items,
-                        extractSmartFolderItemData);
+                var smartFolderParameters = _.map(smartFolder.items, extractSmartFolderItemData);
                 queryParameters = {
                     smartFolderItem: smartFolderParameters
                 };
@@ -2492,12 +2500,20 @@ angular.module('intellogoSDK')
          * Gets all smart folders from the server.
          * @param categoryId {string} if passed,
          * will filter the resulting smartCollections by category id
+         * @param metadataFilter {Object} optional filters for the smart collection metadata
+         * Currently supported is only filtering by tags.
+         * @param metadataFilter.tags {Array} an array of tags to match. Only smart collections
+         * matching at least one of the provided tags will be returned.
          * @returns {HttpPromise}
          */
-        function getAllSmartFolders(categoryId) {
+        function getAllSmartFolders(categoryId, metadataFilter) {
             var url = API_LOCATION + '/api/smartFolders';
+            var params = {categoryId: categoryId};
+            if (metadataFilter && metadataFilter.tags) {
+                params.tags = JSON.stringify(metadataFilter.tags);
+            }
 
-            return $http.get(url, {params: {categoryId: categoryId}});
+            return $http.get(url, {params: params});
         }
 
         function getSmartFolderImage(smartFolderId) {
