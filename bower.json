@@ -21,7 +21,8 @@
     "examples",
     "custom-git-hooks",
     "test",
-    "tests"
+    "Gruntfile.js",
+    "package.json"
   ],
   "dependencies": {
     "angular": "~1.4.14",
