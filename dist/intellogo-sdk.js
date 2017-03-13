@@ -992,7 +992,14 @@ angular.module('intellogoSDK')
             return $resource(
                 ServiceUtils.constructServiceUrl('contentGroups', ':id'),
                 {id: '@_id'}, // non-GET
-                {}
+                {
+                    'resolveIncludedSources': {
+                        method: 'GET',
+                        url: ServiceUtils.constructServiceUrl('contentGroups', 'resolved'),
+                        isArray: true,
+                        params: {name: []}
+                    }
+                }
             );
         }
     ]);
