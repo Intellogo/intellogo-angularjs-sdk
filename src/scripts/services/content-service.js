@@ -168,19 +168,20 @@ angular.module('intellogoSDK').factory(
          * server-side ingestion which includes articles pre-processing
          * (e.g. finding their most relevant elements),
          * invoking fingerprinters and adding them to the database.
-         * @param {String} channelUrl The channel URL
-         * @param {Boolean} autoSub Import videos with automatic captions
+         * @param {String} importOptions.channelUrl The channel URL
+         * @param {Boolean} importOptions.autoSub Import videos with automatic captions
+         * @param {Boolean} importOptions.enableCaptionsChunking Whether captions for a single video
+         * should be split in parts, to be analysed separately
+         * @param {Number} importOptions.chunkSize The size (in characters) for each chunk part
          * @return {HttpPromise} Resolved once the ingestion is complete. Keep
          * in mind that it may take some time for the content to be processed.
          */
-        function importCaptions(channelUrl, autoSub, refreshAll) {
+        function importCaptions(channelUrl, importOptions) {
+            var params = _.clone(importOptions);
+            params.channel = channelUrl;
             return $http.post(
                 ServiceUtils.constructServiceUrl('contents', 'initiateChannelImportTask'),
-                {
-                    channel: channelUrl,
-                    autoSub: autoSub,
-                    refreshAll: refreshAll
-                });
+                params);
         }
 
         function getFullTaskStatus(taskId) {

@@ -119,14 +119,21 @@ describe('Service: ContentService', function () {
     it('should import captions', function () {
         spyOn(http, 'post');
 
-        ContentService.importCaptions('http://fmi.uni-sofia.bg/', true, false);
+        ContentService.importCaptions('http://fmi.uni-sofia.bg/', {
+            autoSub: true,
+            enableCaptionsChunking: true,
+            chunkSize: 1000,
+            refreshAll: false
+        });
 
         expect(http.post).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint('/contents/initiateChannelImportTask'),
             {
                 channel: 'http://fmi.uni-sofia.bg/',
                 autoSub: true,
-                refreshAll: false
+                refreshAll: false,
+                enableCaptionsChunking: true,
+                chunkSize: 1000
             });
     });
 
