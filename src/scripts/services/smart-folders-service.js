@@ -92,6 +92,10 @@ angular.module('intellogoSDK')
             return $http.post(url, smartFolderIds);
         }
 
+        function getAllSmartFolderTags() {
+            return $http.get(getSmartFoldersEndpoint('tags'));
+        }
+
         function getSmartFolderImage(smartFolderId) {
             var url =  getSmartFoldersEndpoint('image/' + smartFolderId);
 
@@ -136,11 +140,12 @@ angular.module('intellogoSDK')
 
         return {
             // jshint maxlen:150
-            getAllSmartFolders  : getAllSmartFolders,
-            getSmartFoldersById : getSmartFoldersById,
-            deleteSmartFolder   : deleteSmartFolder,
-            updateSmartFolders  : updateSmartFolders,
-            addSmartFolder      : addSmartFolder,
-            getSmartFolderImage : getSmartFolderImage
+            getAllSmartFolders   : getAllSmartFolders,
+            getAllSmartFolderTags: getAllSmartFolderTags,
+            getSmartFoldersById  : getSmartFoldersById,
+            deleteSmartFolder    : deleteSmartFolder,
+            updateSmartFolders   : updateSmartFolders,
+            addSmartFolder       : addSmartFolder,
+            getSmartFolderImage  : getSmartFolderImage
         };
     });
