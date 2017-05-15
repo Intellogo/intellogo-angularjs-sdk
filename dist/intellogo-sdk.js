@@ -1235,6 +1235,10 @@ angular.module('intellogoSDK').factory(
                               params);
         }
 
+        function getCaptionsFileImportEndpoint() {
+            return ServiceUtils.constructServiceUrl('contents', 'importSubtitles');
+        }
+
         function getEpubImportEndpoint() {
             return ServiceUtils.constructServiceUrl('contents', 'importEpub');
         }
@@ -1272,6 +1276,7 @@ angular.module('intellogoSDK').factory(
             getAllContentSources          : getAllContentSources,
             getAllContentsInCategories    : getAllContentsInCategories,
             getAllTopLevelContents        : getAllTopLevelContents,
+            getCaptionsFileImportEndpoint : getCaptionsFileImportEndpoint,
             getContentDescendants         : getContentDescendants,
             getContentsByIds              : getContentsByIds,
             getContentsBySourceId         : getContentsBySourceId,
