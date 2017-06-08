@@ -41,7 +41,7 @@ describe('Service: ContentService', function () {
             {categories: [], source: 'Dimitar Birov'});
         expect(http.get).toHaveBeenCalledWith(
             window.ApiEndpointHelper.getEndpoint('/contents/all') +
-            '?from=5&to=20&source=Dimitar%20Birov');
+            '?from=5&to=20&metadataFilter=%7B%22source%22%3A%22Dimitar%20Birov%22%7D');
     });
 
     it('should remove a single content', function () {
