@@ -1047,7 +1047,10 @@ angular.module('intellogoSDK').factory(
             function setSource() {
                 var source = options.source;
                 if (source) {
-                    queryParameters.source = source;
+                    if (!queryParameters.metadataFilter) {
+                        queryParameters.metadataFilter = {};
+                    }
+                    queryParameters.metadataFilter.source = source;
                 }
             }
 
@@ -3127,7 +3130,7 @@ angular.module('intellogoSDK')
 angular.module('intellogoSDK')
     .factory(
         'UsersService',
-        ["$http", "ServiceUtils", function ($http, ServiceUtils) {
+        ["$http", "$resource", "ServiceUtils", function ($http, $resource, ServiceUtils) {
             function getUsersByUsernameSearch(username) {
                 var url = ServiceUtils.constructServiceUrl(
                     'users',
@@ -3144,9 +3147,19 @@ angular.module('intellogoSDK')
                 return $http.get(url);
             }
 
+            var usersResource = $resource(
+                ServiceUtils.constructServiceUrl('users', ':id'),
+                {id: '@userId'}
+            );
+
             return {
                 getUsersByUsername: getUsersByUsernameSearch,
-                getUsersByIds     : getUsersByIds
+                getUsersByIds     : getUsersByIds,
+                get: usersResource.get.bind(usersResource),
+                save: usersResource.save.bind(usersResource),
+                query: usersResource.query.bind(usersResource),
+                remove: usersResource.remove.bind(usersResource),
+                delete: usersResource.delete.bind(usersResource)
             };
         }]);
 

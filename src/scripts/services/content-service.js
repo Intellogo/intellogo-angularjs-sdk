@@ -41,7 +41,10 @@ angular.module('intellogoSDK').factory(
             function setSource() {
                 var source = options.source;
                 if (source) {
-                    queryParameters.source = source;
+                    if (!queryParameters.metadataFilter) {
+                        queryParameters.metadataFilter = {};
+                    }
+                    queryParameters.metadataFilter.source = source;
                 }
             }
 
