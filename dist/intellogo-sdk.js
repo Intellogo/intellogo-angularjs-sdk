@@ -1275,6 +1275,18 @@ angular.module('intellogoSDK').factory(
                 });
         }
 
+        function getDeletedContentBySources(sources, timeInterval) {
+            return $http.post(
+                ServiceUtils.constructServiceUrl('contents',
+                    'deletedBySource'),
+                {
+                    /* set to seconds timestamp */
+                    from   : Math.floor(timeInterval.from / 1000),
+                    to     : Math.floor(timeInterval.to / 1000),
+                    sources: sources
+                });
+        }
+
         return {
             getAllContentSources          : getAllContentSources,
             getAllContentsInCategories    : getAllContentsInCategories,
@@ -1286,6 +1298,7 @@ angular.module('intellogoSDK').factory(
             getContentsCount              : getContentsCount,
             getIngestedContentBySources   : getIngestedContentBySources,
             getBlacklistedContentBySources: getBlacklistedContentBySources,
+            getDeletedContentBySources    : getDeletedContentBySources,
             getContentsRestrictions       : getContentsRestrictions,
             getEpubImportEndpoint         : getEpubImportEndpoint,
             getImportArticlesEndpoint     : getImportArticlesEndpoint,

@@ -8,8 +8,7 @@ module.exports = function (grunt) {
     grunt.initConfig({
         run: {
             installBower: {
-                cmd: 'bower',
-                args: ['install', '--allow-root']
+                exec: 'bower install --allow-root'
             }
         },
         ngAnnotate: {
