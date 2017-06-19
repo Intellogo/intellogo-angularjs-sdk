@@ -1,6 +1,6 @@
 {
   "name": "intellogo-angularjs-sdk",
-  "version": "1.0.0",
+  "version": "0.7.0",
   "description": "Angular.js SDK for the Intellogo REST API",
   "main": "-",
   "dependencies": {},
