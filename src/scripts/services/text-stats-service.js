@@ -16,7 +16,16 @@ angular.module('intellogoSDK')
                 return $http.get(url);
             }
 
+            function getKeywordExtractors() {
+                var url = ServiceUtils.constructServiceUrl(
+                    'processing',
+                    'keywordExtractors'
+                );
+                return $http.get(url);
+            }
+
             return {
-                extractKeywords: extractKeywords
+                extractKeywords: extractKeywords,
+                getKeywordExtractors: getKeywordExtractors
             };
         });
