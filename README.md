@@ -9,7 +9,7 @@ Note: Some of the functionality requires your clientId to have admin privileges.
 
 ---
 
-#Usage
+# Usage
 
 The main script that needs to be included in your application is `dist/intellogo-sdk.js`. This will make available an Angular.js module named `intellogoSDK` that you should add as a dependency of your own application.
 
@@ -64,3 +64,19 @@ After that, you will need to authenticate again before you can use any Intellogo
 
 # Example
 A simple example application can be seen in `examples/oauth-demo`.
+
+# Build
+Intellogo's angular.js SDK uses grunt for build tasks. Make sure you have installed node.js and npm, then run `npm install` to install grunt and the required grunt tasks.
+
+Available grunt tasks:
+* `grunt build` Generates build files in the `dist` folder.
+* `grunt test` Runs the tests (uses karma).
+
+# Create a new release
+This library follows semver conventions. To release a new version:
+* Manually edit the version number in [bower.json]
+* Commit local changes
+* Create a new tag with the proper semver version. Either:
+  * Manually create a tag with the same name as the new version
+  * Run `bower version <major/minor/patch>`. This will create a new git tag and will add a commit with the version update.
+* Push the version update commit and the tag to the remote with  with `git push origin <tag_name> HEAD`. Note that `git push` by itself will *not* push the tag, which is what bower uses to determine the library's available versions.
